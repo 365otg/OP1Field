@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The OP-1 Field Guide: Ultimate Edition</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Master your Teenage Engineering OP-1 Field with this comprehensive guide. Explore essential tips, advanced techniques, workflow hacks, and detailed explanations for the synth engines, drum sampler, tape recorder, effects, and sequencers.">
+    <meta name="keywords" content="OP-1 Field, Teenage Engineering, OP-1 Guide, OP-1 Tutorial, OP-1 Tips, Synthesizer, Sampler, Tape Recorder, Sequencer, FX, LFO, Music Production, Portable Synth, Sound Design, Workflow">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --op1-bg: #1a1a1a;
+            --op1-card-bg: #252525;
+            --op1-accent-blue: #00A8CC;
+            --op1-accent-hover: #00c0e6;
+            --op1-accent-ochre: #E6A336;
+            --op1-accent-gray: #888888;
+            --op1-accent-orange: #FF4500;
+            --op1-muted: #4a4a4a;
+            --op1-muted-hover: #5a5a5a;
+            --op1-text-light: #f0f0f0;
+            --op1-text-dark: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--op1-bg);
+            color: var(--op1-text-light);
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .card {
+            background-color: var(--op1-card-bg);
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+        }
+        .tip-category-button, .header-button {
+            background-color: var(--op1-muted);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+        }
+        .tip-category-button:hover, .header-button:hover {
+            background-color: var(--op1-muted-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+        .tip-category-button.active {
+            background-color: var(--op1-accent-blue);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+        .tip-item {
+            background-color: #333333;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid var(--op1-accent-blue);
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 50;
+        }
+        .modal-content {
+            background-color: var(--op1-card-bg);
+            border-radius: 16px;
+        }
+        .close-button {
+            color: #F0F0F0;
+            font-size: 1.8rem;
+            transition: color 0.2s;
+        }
+        .close-button:hover {
+            color: #FF8888;
+        }
+        .search-input {
+            background-color: var(--op1-bg);
+            border: 1px solid var(--op1-muted);
+            color: #F0F0F0;
+            padding: 14px 20px;
+            border-radius: 10px;
+            outline: none;
+            width: 100%;
+            max-width: 450px;
+        }
+        .search-input::placeholder {
+            color: var(--op1-text-dark);
+        }
+        .search-button, #download-pdf-button, .more-info-button, #back-to-tip-button {
+            background-color: var(--op1-accent-blue);
+            color: #ffffff;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .search-button:hover, #download-pdf-button:hover, .more-info-button:hover, #back-to-tip-button:hover {
+            background-color: var(--op1-accent-hover);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+        .related-tips-container, .suggested-tip-container {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--op1-muted);
+        }
+        .suggested-tip-box, .related-tip-box {
+            background-color: #252525;
+            border: 1px solid var(--op1-muted);
+            border-left: 5px solid var(--op1-accent-blue);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .suggested-tip-box:hover, .related-tip-box:hover {
+            background-color: #333;
+        }
+        .tip-icon {
+            margin-right: 12px;
+            color: var(--op1-accent-blue);
+            font-size: 1.1em;
+        }
+        .copy-button {
+            background-color: var(--op1-muted);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out;
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        .copy-button:hover {
+            background-color: var(--op1-muted-hover);
+        }
+        footer { border-top: 1px solid var(--op1-muted); padding-top: 2rem; margin-top: 4rem; }
+        .footer-link { transition: color 0.2s ease-in-out; color: var(--op1-text-dark); }
+        .footer-link:hover { color: var(--op1-accent-blue); }
+        h1, h2, h3, h4 { color: var(--op1-text-light); }
+        p, li { color: #b0b0b0; }
+        .main-title {
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+        .combo-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .combo-table th, .combo-table td {
+            border: 1px solid var(--op1-muted);
+            padding: 12px;
+            text-align: left;
+        }
+        .combo-table th {
+            background-color: var(--op1-muted);
+        }
+        .combo-key {
+            background-color: var(--op1-text-dark);
+            color: var(--op1-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        .details-view { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center px-4">
+
+    <header class="w-full max-w-6xl text-center mb-12 flex flex-col items-center">
+        <div class="w-full flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <div class="flex flex-wrap justify-center gap-2">
+                <button id="op1-licks-button" class="header-button"><i class="fa-solid fa-lightbulb mr-2"></i>OP-1 Licks</button>
+                <button id="effects-list-button" class="header-button"><i class="fas fa-sliders mr-2"></i>FX List</button>
+                <button id="sequencers-button" class="header-button"><i class="fas fa-wave-square mr-2"></i>Sequencers</button>
+                <button id="shortcuts-button" class="header-button"><i class="fas fa-keyboard mr-2"></i>Shortcuts</button>
+            </div>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl main-title mb-4">The OP-1 Field Guide</h1>
+        <p class="text-lg sm:text-xl lg:text-2xl text-gray-300">Your pocket companion for the portable wonder.</p>
+    </header>
+
+    <main class="w-full max-w-6xl">
+        <div class="flex flex-col sm:flex-row justify-center items-center mb-12 gap-4 w-full px-4 sm:px-0">
+            <input type="search" id="search-input" placeholder="Search tips..." class="search-input w-full sm:w-auto flex-grow sm:flex-grow-0">
+            <button id="search-button" class="search-button w-full sm:w-auto">Search</button>
+        </div>
+
+        <section class="mb-16 p-6 bg-[#1E1E1E] rounded-lg shadow-xl">
+            <h2 class="text-3xl font-bold text-white mb-6 text-center">Essential Tips to Get You Started <i class="fa-solid fa-bolt tip-icon"></i></h2>
+            <div id="top-tips-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <div class="mb-12">
+            <h3 class="text-2xl font-bold text-center mb-6">Filter by Category</h3>
+            <div id="category-filter-container" class="flex flex-wrap justify-center gap-4"></div>
+        </div>
+
+        <section id="tips-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></section>
+        
+        <div class="flex justify-center mt-16">
+            <button id="download-pdf-button" class="search-button"><i class="fa-solid fa-file-pdf"></i> Download All Tips as PDF</button>
+        </div>
+    </main>
+
+    <!-- Tip Modal -->
+    <div id="tip-modal" class="modal fixed inset-0 flex items-center justify-center p-4 hidden">
+        <div class="modal-content w-full max-w-3xl p-8 relative overflow-y-auto max-h-[90vh]">
+            <button id="close-modal" class="close-button absolute top-4 right-4 z-10">&times;</button>
+            <div id="main-tip-view">
+                <h3 id="modal-title" class="text-3xl font-semibold mb-2"></h3>
+                <p id="modal-description" class="text-lg leading-relaxed"></p>
+                <p id="modal-source" class="text-sm mt-6"></p>
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <button id="copy-tip-button" class="copy-button"><i class="fa-solid fa-copy"></i> Copy Tip</button>
+                    <button id="more-info-button" class="more-info-button"><i class="fa-solid fa-circle-info"></i> More Info</button>
+                </div>
+            </div>
+            <div id="details-view" class="hidden">
+                 <h3 id="details-title" class="text-3xl font-semibold mb-2"></h3>
+                 <div id="details-content" class="text-lg leading-relaxed prose prose-invert max-w-none"></div>
+                 
+                 <div id="related-tips-container" class="related-tips-container">
+                     <h4 class="text-2xl font-semibold mb-4">Related Tips</h4>
+                     <div id="related-tips-list" class="space-y-3"></div>
+                 </div>
+
+                 <div id="suggested-tip-container" class="suggested-tip-container">
+                     <h4 class="text-2xl font-semibold mb-4">Suggested Tip</h4>
+                     <div id="suggested-tip-box-content"></div>
+                 </div>
+                 
+                 <button id="back-to-tip-button" class="search-button mt-6"><i class="fa-solid fa-arrow-left"></i> Back to Tip</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- OP-1 Licks Modal -->
+    <div id="op1-licks-modal" class="modal fixed inset-0 flex items-center justify-center p-4 hidden">
+        <div class="modal-content w-full max-w-4xl p-8 relative overflow-y-auto max-h-[90vh]">
+            <button id="close-op1-licks-modal" class="close-button absolute top-4 right-4 z-10">&times;</button>
+            <h3 class="text-4xl font-semibold mb-6"><i class="fa-solid fa-lightbulb mr-3"></i>OP-1 Licks: 35 Patterns & Ideas</h3>
+            <div id="op1-licks-content" class="text-lg leading-relaxed"></div>
+        </div>
+    </div>
+    
+    <!-- Effects List Modal -->
+    <div id="effects-list-modal" class="modal fixed inset-0 flex items-center justify-center p-4 hidden">
+        <div class="modal-content w-full max-w-4xl p-8 relative overflow-y-auto max-h-[90vh]">
+            <button id="close-effects-list-modal" class="close-button absolute top-4 right-4 z-10">&times;</button>
+            <h3 class="text-4xl font-semibold mb-6">FX List</h3>
+            <input type="search" id="effects-search-input" placeholder="Search effects..." class="search-input mb-6 w-full">
+            <div id="effects-list-container" class="text-lg leading-relaxed"></div>
+        </div>
+    </div>
+    
+    <!-- Sequencers Modal -->
+    <div id="sequencers-modal" class="modal fixed inset-0 flex items-center justify-center p-4 hidden">
+        <div class="modal-content w-full max-w-4xl p-8 relative overflow-y-auto max-h-[90vh]">
+            <button id="close-sequencers-modal" class="close-button absolute top-4 right-4 z-10">&times;</button>
+            <h3 class="text-4xl font-semibold mb-6">Sequencer Guide</h3>
+            <div id="sequencers-container" class="text-lg leading-relaxed"></div>
+        </div>
+    </div>
+
+    <!-- Shortcuts Modal -->
+    <div id="shortcuts-modal" class="modal fixed inset-0 flex items-center justify-center p-4 hidden">
+        <div class="modal-content w-full max-w-4xl p-8 relative overflow-y-auto max-h-[90vh]">
+            <button id="close-shortcuts-modal" class="close-button absolute top-4 right-4 z-10">&times;</button>
+            <h3 class="text-4xl font-semibold mb-6">Button Combos & Shortcuts</h3>
+            <div id="shortcuts-container" class="text-sm leading-relaxed"></div>
+        </div>
+    </div>
+
+    <footer class="w-full max-w-6xl text-center text-gray-500">
+        <p class="mb-4">OP-1 Field Guide by <a href="https://www.charlesparis.com" target="_blank" class="font-bold footer-link">Charles Paris</a></p>
+        <div class="flex justify-center items-center gap-6 text-2xl">
+            <a href="https://teenage.engineering" target="_blank" class="footer-link"><i class="fas fa-globe"></i></a>
+            <a href="https://www.youtube.com/c/teenageengineering" target="_blank" class="footer-link"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const { jsPDF } = window.jspdf;
+
+        const categories = {
+            concepts: { name: "Concepts", icon: 'fa-solid fa-lightbulb' },
+            synth: { name: "Synth", icon: 'fa-solid fa-wave-square' },
+            drum: { name: "Drum", icon: 'fa-solid fa-drum' },
+            tape: { name: "Tape", icon: 'fa-solid fa-tape' },
+            mixer: { name: "Mixer", icon: 'fa-solid fa-sliders' },
+            sequencer: { name: "Sequencer", icon: 'fa-solid fa-border-all' },
+            effects: { name: "Effects", icon: 'fa-solid fa-magic-sparkles' },
+            sampling: { name: "Sampling", icon: 'fa-solid fa-microphone-lines' },
+            midi_connectivity: { name: "MIDI & Connectivity", icon: 'fa-solid fa-link' },
+            pro_tips: { name: "Pro Tips", icon: 'fa-solid fa-star' }
+        };
+
+        const tipsData = [
+            // --- CONCEPTS ---
+            { category: "concepts", title: "The Four Main Modes", description: "The OP-1 workflow is built around four main modes: Synth, Drum, Tape, and Mixer. Press their dedicated keys to switch between them.", source: "Manual p.10", topTip: true, context: "This is the core concept of the OP-1. You select a sound in Synth or Drum mode, record your performance as audio onto the Tape, and then use the Mixer to balance the levels and add master effects. Understanding this signal flow is key to making music on the OP-1.", related: ["Recording to Tape", "Sound Path Overview"] },
+            { category: "concepts", title: "Automatic Saving", description: "The OP-1 Field automatically saves your work. There is no 'Save' button. When you power off and on again, everything will be exactly as you left it.", source: "Manual p.8", context: "This feature encourages a fluid, creative process. You don't have to interrupt your flow to save. However, it also means that destructive actions (like recording over tape) are permanent, so be mindful of your work. Use the 'Lift' and 'Drop' tape functions to back up sections before making big changes.", related: ["Lifting and Dropping Audio", "Factory Reset"] },
+            { category: "concepts", title: "Using the Help Key", description: "The Help key (speech bubble) is your best friend. Press it in combination with any other key to see a quick overlay explaining that key's function in the current context.", source: "Manual p.12", context: "Instead of memorizing every function, use the Help key to learn contextually. For a deeper dive, press SHIFT + HELP to access the full built-in user guide." },
+            { category: "concepts", title: "Sound Path Overview", description: "To see a visual representation of the entire signal flow, press SHIFT + MIXER. This shows how your sound travels from the synth/drum engine, through effects, to tape, and out to the master.", source: "Manual p.84", context: "This screen is invaluable for troubleshooting. If you can't hear something, check the Sound Path screen. A warning symbol will light up on any part of the chain where the level is set to zero, helping you quickly identify the problem." },
+            
+            // --- SYNTH ---
+            { category: "synth", title: "Changing Synth Engines", description: "To select a different synth engine, press SHIFT + T1. Use the Blue encoder to scroll through the list of engines and press T1 or tap the encoder to confirm.", source: "Manual p.18", topTip: true, context: "The T1-T4 keys correspond to the four main pages for any sound. T1 is always the sound engine itself. Holding SHIFT while pressing these keys opens up deeper options, like changing the entire engine or LFO type.", related: ["Loading a Full Preset", "ADSR Envelope"] },
+            { category: "synth", title: "Loading a Full Preset", description: "To load a complete sound preset (Engine, Envelope, FX, and LFO), hold SHIFT and press one of the preset keys (1-8). Use the Blue encoder for engine type and Ochre for the preset.", source: "Manual p.16", context: "This is different from just changing the engine (SHIFT + T1). Loading a preset changes all four modules at once, giving you a fully-formed sound instantly. It's the fastest way to explore new sounds." },
+            { category: "synth", title: "ADSR Envelope", description: "Press T2 in Synth mode to access the ADSR (Attack, Decay, Sustain, Release) envelope. This shapes the volume of your sound over time.", source: "Manual p.38", context: "A short attack is good for percussive sounds, while a long attack creates a swelling pad. The envelope is fundamental to sound design and turning a raw oscillator into a musical instrument.", related: ["Play Mode Settings"] },
+            { category: "synth", title: "Play Mode Settings", description: "In the Envelope screen (T2), press SHIFT to access Play Mode settings. Here you can change from Polyphonic to Mono, and adjust Portamento (glide between notes).", source: "Manual p.39", context: "These settings dramatically change how a patch responds to your playing. Use Mono with Portamento for classic sliding lead lines, or Poly for playing chords." },
+            { category: "synth", title: "Modulating with an LFO", description: "Press T4 to activate the LFO (Low Frequency Oscillator) for a sound. Press SHIFT + T4 to change the LFO type and its destination.", source: "Manual p.50", context: "The LFO is the key to adding movement and life to your sounds. You can assign it to almost any parameter, like filter cutoff, pitch, or an effect parameter. Subtle LFO modulation can make a static sound feel organic and dynamic.", related: ["Using Effects (FX)"] },
+
+            // --- DRUM ---
+            { category: "drum", title: "Laying Out a Drum Kit", description: "In the Drum Sampler, press any musical key to select it for editing. Use the encoders to set the sample's start and end points for that key. Press the key again to confirm.", source: "Manual p.64", context: "This allows you to chop up a single audio file (like a drum loop or a vocal phrase) and assign different slices to different keys, creating a playable kit from one source.", related: ["Drum Envelope", "Sampling a New Sound"] },
+            { category: "drum", title: "Drum Envelope", description: "The Drum Envelope (T2 in Drum mode) is a transient shaper. Use it to control the attack (punch) and release (tail) of your drum sounds.", source: "Manual p.68", context: "This is different from the synth's ADSR envelope. It's specifically designed for percussion. Increase the attack to make a kick drum punchier, or soften it to make a snare less aggressive." },
+            { category: "drum", title: "Dbox Drum Synth", description: "The Dbox engine is a dual-oscillator synth for creating your own drum sounds from scratch. Every key on the keyboard represents a unique sound you can edit.", source: "Manual p.66", context: "Instead of using samples, you can synthesize your own kicks, snares, and hi-hats. Hold SHIFT to access the parameters for the second oscillator and the filter." },
+            
+            // --- TAPE ---
+            { category: "tape", title: "Recording to Tape", description: "Select a tape track (T1-T4), find an empty spot, set your input level with the Orange encoder, then hold REC and press PLAY to start recording.", source: "Manual p.70", topTip: true, context: "The tape recorder is the heart of the OP-1. Unlike a sequencer that records MIDI notes, the tape records pure audio. This means once something is recorded, you can't change the notes, but you can manipulate the audio in creative ways like changing the speed or reversing it.", related: ["Lifting and Dropping Audio", "Tape Tricks"] },
+            { category: "tape", title: "Lifting and Dropping Audio", description: "Use the LIFT key (scissors) to copy a selection of audio from the tape. Move to a new location and use the DROP key (down arrow) to paste it.", source: "Manual p.72", context: "This is the OP-1's version of copy and paste. It's essential for arranging your song. You can lift a drum loop from track 1, move the tape head, and drop it later in the song on track 2 to build your arrangement.", related: ["Splitting and Joining Takes"] },
+            { category: "tape", title: "Splitting and Joining Takes", description: "Use the SPLIT key to cut a recorded take at the playhead's position. To join two adjacent takes into one, place the playhead between them and press SHIFT + SPLIT.", source: "Manual p.72, 74", context: "Splitting is crucial for fine-tuning the timing of your recordings or isolating a single sound. Joining is useful for cleaning up your tape view and grouping parts that belong together." },
+            { category: "tape", title: "Overdubbing vs. Punch-in", description: "By default, recording on a track with existing audio will overdub (mix with) the old audio. To punch-in (replace) a section, lift the audio from that section first, then record into the empty space.", source: "General Workflow", context: "Understanding this is key to building layers. Overdubbing is great for adding harmonies or stacking percussion. Punch-in recording is for correcting mistakes or replacing a part entirely." },
+            { category: "tape", title: "Tape Tricks", description: "In Tape Mode, keys 1-8 become 'Tape Tricks'. These include setting loop points (1, 2), reversing tape playback (5), and a tempo-synced stutter effect (6).", source: "Manual p.73", context: "These are powerful performance tools. You can create fills with the 'Chop' trick or reverse your entire track for a moment. Experiment with them while your song is playing to create interesting variations." },
+            { category: "tape", title: "Change Tape Styles", description: "Press SHIFT + TAPE to open the tape browser. Here you can switch between 8 different tapes and choose from 4 different 'styles' (Studio, Vintage, Porta, Disc) that color the sound.", source: "Manual p.76", context: "Each tape style has a unique character. 'Vintage' might add some hiss and warmth, while 'Studio' is clean. This is a great way to add a specific vibe to your entire track. You can also rename tapes here to keep your projects organized." },
+            
+            // --- MIXER ---
+            { category: "mixer", title: "Mute Tracks in Mixer", description: "In the Mixer (T1), you can mute individual tracks by holding SHIFT and pressing the corresponding track key (T1-T4).", source: "Manual p.78", context: "This is much faster than turning the volume knob down and is essential for arranging and mixing down your track. You can use it to build your song by bringing elements in and out." },
+            { category: "mixer", title: "Master EQ and FX", description: "Press MIXER, then T2 for the master EQ or T3 for the master FX. These affect the entire mix coming from all four tape tracks.", source: "Manual p.80, 81", context: "The master EQ and FX are not recorded to the individual tape tracks. They are applied live during playback and when you record the final mixdown. Use them to glue your track together and give it a final polish.", related: ["Recording a Final Mixdown"] },
+            { category: "mixer", title: "Master Drive", description: "In the Master Out screen (MIXER -> T4), the Drive parameter adds saturation and compression to your final mix, making it sound louder and more compact.", source: "Manual p.82", context: "A little drive can add warmth and character, but too much can make the mix sound distorted and flat. Use it subtly to add punch and cohesion. The 'Release' parameter controls how the compression 'pumps'." },
+
+            // --- SEQUENCER ---
+            { category: "sequencer", title: "Sequencer vs. Tape", description: "Sequencers store note data, not audio. This means you can record a pattern with a sequencer and then change the synth sound that plays the pattern.", source: "Manual p.86", topTip: true, context: "This is a key difference from the tape. Use a sequencer to create a melody or drum pattern, then go to Synth or Drum mode and swap out different presets to see how they sound with your sequence. To commit the sound, you must then record the sequencer's output to the tape.", related: ["Recording to Tape"] },
+            { category: "sequencer", title: "Enable a Sequencer", description: "To choose and enable a sequencer, press SHIFT + SEQUENCER key. Select the type with the Blue encoder and press the SEQUENCER key again to activate it.", source: "Manual p.86", context: "Repeatedly pressing the sequencer key (without SHIFT) will toggle the currently selected sequencer on and off. The light on the key indicates if it's active." },
+            
+            // --- EFFECTS ---
+            { category: "effects", title: "Using Effects (FX)", description: "Press T3 in Synth or Drum mode to access the FX page. Press SHIFT + T3 to change the effect type. The effect is part of the sound and gets recorded to tape.", source: "Manual p.40", context: "Effects are crucial for sound design. They can be simple (like a delay) or transformative (like the CWO). Remember that the FX you choose is saved with your sound preset.", related: ["Modulating with an LFO"] },
+            
+            // --- SAMPLING ---
+            { category: "sampling", title: "Sampling a New Sound", description: "In Synth or Drum sampler, press the INPUT key (mic icon). Select your source (mic, line in, radio, or internal resampling) and set the threshold. Hold any musical key to start sampling.", source: "Manual p.36, 106", topTip: true, context: "Once you release the key, the recording stops and is immediately playable on the keyboard. This fast, intuitive workflow is what makes sampling on the OP-1 so fun. Use the encoders to trim the start/end points after recording." },
+            { category: "sampling", title: "Internal Resampling (EAR)", description: "In the input selection screen (SHIFT + INPUT), choose the 'EAR' icon. This allows you to record whatever is currently coming out of the OP-1's main output back into the sampler.", source: "Manual p.106", context: "This is an incredibly powerful technique. You can play a chord, add effects and LFO, and then resample that entire sound as a new sample. This allows you to create complex, layered sounds that would be impossible to make otherwise." },
+
+            // --- MIDI & CONNECTIVITY ---
+            { category: "midi_connectivity", title: "MTP File Transfer", description: "Connect your OP-1 to a computer via USB-C. Hold SHIFT and press COM, then press T4 (MTP). The OP-1 will appear as a device on your computer for transferring audio files.", source: "Manual p.112, 119", context: "This is how you back up your tapes and presets, or load new samples onto the device. You can drag and drop audio files directly into the 'synth' or 'drum' folders to use them as presets." },
+            { category: "midi_connectivity", title: "FM Radio Transmitter", description: "Press the OUTPUT key and select the antenna icon. You can now broadcast the OP-1's audio on an FM frequency to a nearby radio (like the OB-4 or a car stereo).", source: "Manual p.110", context: "This is a unique feature for sharing your music wirelessly. The OP-1 will scan for open frequencies to minimize interference. You can even sync the frequency with a nearby OB-4." },
+            { category: "midi_connectivity", title: "Recording a Final Mixdown", description: "Press the OUTPUT key and select the mixdown screen. Press T4 to start recording your performance. When finished, press T2 to stop. The final stereo file is found in the 'mixdown' folder via MTP.", source: "Manual p.108", context: "This records everything you hear from the main output, including master EQ, FX, and live manipulations. It's the primary way to export a finished song as a single stereo file." },
+
+            // --- PRO TIPS ---
+            { category: "pro_tips", title: "Nudge Tempo", description: "In the Tempo screen, you can use the LEFT and RIGHT arrow keys to temporarily nudge the tempo up or down. This is great for syncing with a live musician by ear.", source: "Manual p.96", context: "Unlike changing the BPM directly, nudging is temporary and helps you get back in time without stopping the music. It's a subtle but powerful feature for live performance." },
+            { category: "pro_tips", title: "Save a Sound Snapshot", description: "To quickly save the current state of a sound you're working on, just hold its preset key (1-8) for three seconds. A snapshot will be saved to the 'snapshot' folder.", source: "Manual p.118", context: "This is faster than going through MTP mode to save a patch. It's perfect for when you've tweaked a sound into something you love and want to save it immediately without interrupting your creative flow." },
+            { category: "pro_tips", title: "Delayed Power Off", description: "To prevent accidentally turning off your OP-1, go to the settings menu (SHIFT + TEMPO), select System, and set 'Power Off' to 'Delayed'.", source: "Manual p.103", context: "This simple change can save you from the heartache of bumping the power switch during a performance. With this setting, you'll have to hold the switch down for a moment to power off." },
+            { category: "pro_tips", title: "Lift/Drop to Backup Tape", description: "Before making a risky change (like recording over a whole track), you can back up your entire tape. Set a loop around the whole song, press SHIFT + LIFT to copy all 4 tracks. If you make a mistake, you can use DROP to paste the backup back.", source: "General Workflow", context: "This is the OP-1 equivalent of 'Save As...'. It gives you a temporary backup in memory, providing a safety net for destructive editing or recording." }
+        ];
+
+        const op1LicksData = [
+            { title: "Classic Arp Up", sequencer: "Arpeggio", description: "Set Arpeggio to 1/16, 'UP' direction. Hold a simple minor 7th chord for an instant, driving melodic line." },
+            { title: "Funky Bassline", sequencer: "Pattern", description: "Use the Pattern sequencer. Program a 16-step bassline with lots of rests (empty steps) to create a syncopated, funky rhythm." },
+            { title: "Ambient Chord Progression", sequencer: "Endless", description: "Use the Endless sequencer. Play in a 4-chord progression very slowly. Set the note length to be long (turn Blue encoder clockwise). Overdub notes to build thick, evolving pads." },
+            { title: "Glitched Beat", sequencer: "Finger", description: "Use the Finger sequencer with a drum kit. Record a simple pattern, then switch the play mode (Ochre encoder) to the 'random' or 'stutter' modes to create complex, unpredictable glitchy beats." },
+            { title: "Bouncing Ball Melody", sequencer: "Tombola", description: "Use the Tombola sequencer. Drop a few notes into the spinning wheel. Adjust the 'heaviness' (Ochre) and 'bounciness' (Gray) to create a semi-random, generative melody." },
+            { title: "Strummed Chords", sequencer: "Arpeggio", description: "Set Arpeggio speed very fast (1/32 or 1/64) and hold a chord. This creates a rapid 'strumming' effect." },
+            { title: "Evolving Drone", sequencer: "Hold", description: "Use the Hold sequencer. Play a single low note and a higher fifth. Go to the LFO and assign it to modulate the filter cutoff very slowly for an evolving drone." },
+            { title: "Euclidean Rhythms", sequencer: "Pattern", description: "In Pattern, instead of filling all steps, space your notes out evenly. For example, place 3 notes in a 16-step pattern to create a classic 3-over-4 polyrhythm." },
+            { title: "Hand-Drawn Sequence", sequencer: "Sketch", description: "Use the Sketch sequencer to draw a shape. The X-axis controls time and the Y-axis controls pitch. Draw a smooth wave for a rising and falling melody." },
+            { title: "Random Hi-Hats", sequencer: "Tombola", description: "In Tombola, set the bounciness to max and drop in a single hi-hat note. It will bounce around creating a chaotic, random hi-hat pattern." },
+            { title: "Walking Bassline", sequencer: "Endless", description: "Use Endless to record a walking bassline over a chord progression. Its ability to hold many notes makes it ideal for longer, non-repeating phrases." },
+            { title: "Finger Drumming Retrigger", sequencer: "Finger", description: "Use Finger's 'retrigger' play mode. Now, holding down a key will repeat that drum sound at a set rhythm, great for trap-style hi-hats or drum rolls." },
+            { title: "Delayed Arp", sequencer: "Arpeggio", description: "Use a synth patch with a long attack. Now when you use the arpeggiator, the notes will swell into each other creating a soft, pad-like texture." },
+            { title: "Polyrhythmic Pattern", sequencer: "Pattern", description: "Record a 4/4 kick and snare pattern. Then, switch to a different sound and record a 7-step pattern for a hi-hat. They will loop at different rates, creating a polyrhythm." },
+            { title: "Generative Ambience", sequencer: "Sketch", description: "In Sketch, draw a few random dots. Use a pad sound with a long release and lots of reverb. The result will be a sparse, generative ambient piece." },
+            { title: "Chord Memory", sequencer: "Hold", description: "Use the Hold sequencer to play a complex chord. Now you can trigger that entire chord with a single key press, which you can then record to tape." },
+            { title: "Building Intensity", sequencer: "Endless", description: "Record a simple 4-note melody in Endless. Then, overdub more notes in between the original notes to gradually increase the density and intensity of the sequence." },
+            { title: "Call and Response", sequencer: "Pattern", description: "Use two different sounds. Program a 'call' phrase in the first 8 steps with sound 1, and a 'response' phrase in the last 8 steps with sound 2." },
+            { title: "Instant Breakbeat", sequencer: "Finger", description: "Load a drum break into the drum sampler and chop it to the keys. Use the Finger sequencer to re-sequence the chops into a new pattern." },
+            { title: "Physics-based Fills", sequencer: "Tombola", description: "Program a steady beat on tape. Use Tombola with a snare sound, and just before the loop repeats, drop a note in to create a random, physics-based drum fill." },
+            { title: "Melody Drawing", sequencer: "Sketch", description: "Draw your melody visually with the Sketch sequencer. Try drawing stairs for an ascending scale, or a mountain range for a more complex contour." },
+            { title: "Arp and LFO Sync", sequencer: "Arpeggio", description: "Set an Arp to 1/8. Then set an LFO to modulate the filter cutoff at the same 1/8 speed. The two will move in perfect sync, creating a classic rhythmic synth effect." },
+            { title: "Never-ending Melody", sequencer: "Endless", description: "The Endless sequencer can be very long. Use it to record a melody that doesn't repeat for 8 or 16 bars, breaking the monotony of short loops." },
+            { title: "Humanized Groove", sequencer: "Pattern", description: "Use the swing function in the Pattern sequencer (SHIFT + Orange encoder) to add a more human, less robotic feel to your drum beats." },
+            { title: "Polyphonic Finger Fun", sequencer: "Finger", description: "Finger is polyphonic. Record a bassline, then without erasing, record chords over the top on a different part of the keyboard." },
+            { title: "Tombola Drone", sequencer: "Tombola", description: "Set bounciness and speed to zero. The notes will just stick to the walls and play continuously. Use this with pad sounds for a strange, shifting drone." },
+            { title: "Sketching Rhythms", sequencer: "Sketch", description: "Use Sketch with a drum kit. Draw vertical lines to trigger multiple sounds at once (a chord of drums), and horizontal lines for rhythmic patterns." },
+            { title: "Hold for Layering", sequencer: "Hold", description: "Use Hold to sustain a pad chord, leaving your hands free to play a melody on top with another sound, which you can then record to tape." },
+            { title: "Arp Direction Change", sequencer: "Arpeggio", description: "Automate the Arpeggio direction. Record the arp playing 'UP', then lift and drop that audio, and record another section with the direction set to 'DOWN' or 'RANDOM'." },
+            { title: "Pattern Chaining", sequencer: "Tape", description: "Record a pattern from the Pattern sequencer to tape. Then, create a variation of that pattern and record it right after the first one on the tape to 'chain' them together into a longer sequence." },
+            { title: "Endless Pitch Bend", sequencer: "Endless", description: "Record notes into Endless, then while it's playing back, use the pitch bend to affect the whole sequence. Record this performance to tape." },
+            { title: "Finger Kit Switch", sequencer: "Finger", description: "Record a sequence with Finger using one drum kit. While the sequence plays, switch to another drum kit. The notes stay the same but the sounds change instantly." },
+            { title: "Tombola Note Weight", sequencer: "Tombola", description: "The 'heaviness' parameter in Tombola affects how much a note is pulled to the center. Use high heaviness for bass notes you want to be more consistent, and low for erratic percussion." },
+            { title: "Sketch Constraint", sequencer: "Sketch", description: "Use the grid and divider options in Sketch (SHIFT + encoders) to constrain your drawing, making it easier to create tonal, grid-based melodies instead of pure chaos." },
+            { title: "The One-Note Arp", sequencer: "Arpeggio", description: "Hold a single note with the arpeggiator on. Now, use an LFO to modulate the synth's pitch. The arpeggiator will retrigger the note, and the LFO will make each retriggered note have a different pitch, creating a melody." }
+        ];
+
+        const effectsListData = {
+            "CWO": { description: "A frequency shifting delay effect with a strange, ghostly character.", params: ["Frequency", "Delay", "Feedback", "Sideband"], source: "Manual p.41" },
+            "Delay": { description: "A classic stereo delay effect. Can be synced to tempo.", params: ["Range", "Speed", "Feedback", "Level"], source: "Manual p.42" },
+            "Grid": { description: "A gridded echo effect that creates rhythmic, spatial delays.", params: ["X Size", "Y Size", "Z Feedback", "Mix"], source: "Manual p.43" },
+            "Mother": { description: "A cavernous, otherworldly reverb with gating and filtering.", params: ["Distance", "Gate", "Color", "Mix"], source: "Manual p.44" },
+            "Nitro": { description: "A dual band-pass filter with resonance and frequency following.", params: ["Lows", "Highs", "Freq Follow", "Q (Resonance)"], source: "Manual p.45" },
+            "Phone": { description: "A lo-fi effect that simulates talking through various telephone and radio devices.", params: ["Tone", "GSM", "Baud", "Telemetry"], source: "Manual p.46" },
+            "Punch": { description: "A powerful compressor/saturator that adds punch and character to sounds.", params: ["Frequency", "Punch", "Rounds", "Power"], source: "Manual p.47" },
+            "Spring": { description: "A classic spring reverb simulation, great for bouncy, metallic textures.", params: ["Tone", "Turns", "Damping", "Mix"], source: "Manual p.48" }
+        };
+        
+        const sequencersData = {
+            "Arpeggio": { description: "Takes the notes you hold and plays them one after another in various patterns and rhythms. A classic synth tool for creating instant melodic motion.", source: "Manual p.88" },
+            "Endless": { description: "A powerful polyphonic step sequencer with a very long step count. Excellent for recording long, non-repetitive melodies or chord progressions.", source: "Manual p.89" },
+            "Finger": { description: "An advanced polyphonic sequencer with different play-modes for retriggering and re-ordering notes. Great for complex drum patterns and glitch effects.", source: "Manual p.90" },
+            "Hold": { description: "A simple note holder, like a sustain pedal. It holds any notes you play until you play a new set of notes. Perfect for drones or freeing up your hands.", source: "Manual p.92" },
+            "Pattern": { description: "The classic 16-step grid sequencer. The foundation for most electronic music beats and basslines. It's visual, intuitive, and includes a swing function.", source: "Manual p.93" },
+            "Sketch": { description: "A physics-based sequencer where you draw your melody on an X/Y plane. Notes are created where lines intersect with a grid, allowing for generative and unusual patterns.", source: "Manual p.94" },
+            "Tombola": { description: "A physics-based sequencer where notes are dropped into a spinning container and bounce around, triggering when they hit the sides. Creates random, generative music.", source: "Manual p.95" }
+        };
+
+        const shortcutsData = [
+            { combo: "SHIFT + 1-8", description: "Load a full sound preset (Engine, Env, FX, LFO).", category: "Synth/Drum" },
+            { combo: "SHIFT + T1", description: "Change only the Synth or Drum engine.", category: "Synth/Drum" },
+            { combo: "SHIFT + T2", description: "Access Play Mode settings (Poly, Mono, Portamento).", category: "Synth" },
+            { combo: "SHIFT + T3", description: "Change the Effect type.", category: "Synth/Drum" },
+            { combo: "SHIFT + T4", description: "Change the LFO type.", category: "Synth/Drum" },
+            { combo: "HELP + (any key)", description: "Show contextual help for that key.", category: "Global" },
+            { combo: "SHIFT + HELP", description: "Open the built-in user guide.", category: "Global" },
+            { combo: "REC + PLAY", description: "Start recording to the armed track.", category: "Tape" },
+            { combo: "SHIFT + REC", description: "Arm recording without starting playback.", category: "Tape" },
+            { combo: "SHIFT + LIFT", description: "Lift audio from all 4 tracks within a loop.", category: "Tape" },
+            { combo: "SHIFT + SPLIT", description: "Join two adjacent audio takes.", category: "Tape" },
+            { combo: "SHIFT + (Arrow Keys)", description: "Jump between beat markers on the tape.", category: "Tape" },
+            { combo: "SHIFT + TAPE", description: "Open the Tape Browser to switch tapes and styles.", category: "Tape" },
+            { combo: "SHIFT + MIXER", description: "View the Sound Path diagram.", category: "Mixer" },
+            { combo: "SHIFT + T1-T4 (in Mixer)", description: "Mute the corresponding tape track.", category: "Mixer" },
+            { combo: "SHIFT + SEQUENCER", description: "Open the Sequencer selection screen.", category: "Sequencer" },
+            { combo: "SHIFT + TEMPO", description: "Open the main Settings menu.", category: "Global" },
+            { combo: "SHIFT + COM", description: "Open the Connectivity (COM) menu for MIDI/USB.", category: "Connectivity" },
+            { combo: "SHIFT + T4 (in COM)", description: "Enable MTP/Disk mode for file transfer.", category: "Connectivity" },
+            { combo: "Hold Preset Key (1-8)", description: "Save a snapshot of the current sound (after 3 sec).", category: "Synth/Drum" }
+        ];
+
+        // DOM ELEMENT VARIABLES
+        const tipsContainer = document.getElementById('tips-container');
+        const topTipsContainer = document.getElementById('top-tips-container');
+        const categoryFilterContainer = document.getElementById('category-filter-container');
+        const tipModal = document.getElementById('tip-modal');
+        const closeModalButton = document.getElementById('close-modal');
+        const mainTipView = document.getElementById('main-tip-view');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalSource = document.getElementById('modal-source');
+        const copyTipButton = document.getElementById('copy-tip-button');
+        const moreInfoButton = document.getElementById('more-info-button');
+        const detailsView = document.getElementById('details-view');
+        const detailsTitle = document.getElementById('details-title');
+        const detailsContent = document.getElementById('details-content');
+        const backToTipButton = document.getElementById('back-to-tip-button');
+        const detailsRelatedList = document.getElementById('related-tips-list');
+        const suggestedTipContainer = document.getElementById('suggested-tip-container');
+        const suggestedTipBoxContent = document.getElementById('suggested-tip-box-content');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const downloadPdfButton = document.getElementById('download-pdf-button');
+        
+        const op1LicksButton = document.getElementById('op1-licks-button');
+        const op1LicksModal = document.getElementById('op1-licks-modal');
+        const closeOp1LicksModalButton = document.getElementById('close-op1-licks-modal');
+        const op1LicksContent = document.getElementById('op1-licks-content');
+
+        const effectsListButton = document.getElementById('effects-list-button');
+        const effectsListModal = document.getElementById('effects-list-modal');
+        const closeEffectsListModalButton = document.getElementById('close-effects-list-modal');
+        const effectsListContainer = document.getElementById('effects-list-container');
+        const effectsSearchInput = document.getElementById('effects-search-input');
+
+        const sequencersButton = document.getElementById('sequencers-button');
+        const sequencersModal = document.getElementById('sequencers-modal');
+        const closeSequencersModalButton = document.getElementById('close-sequencers-modal');
+        const sequencersContainer = document.getElementById('sequencers-container');
+
+        const shortcutsButton = document.getElementById('shortcuts-button');
+        const shortcutsModal = document.getElementById('shortcuts-modal');
+        const closeShortcutsModalButton = document.getElementById('close-shortcuts-modal');
+        const shortcutsContainer = document.getElementById('shortcuts-container');
+
+        // STATE VARIABLES
+        let currentCategory = 'all';
+        let currentTip = null;
+
+        // --- HELPER FUNCTIONS ---
+        const getIconHtml = (category) => {
+            const iconClass = categories[category]?.icon || 'fa-solid fa-question-circle';
+            return `<i class="${iconClass} tip-icon"></i>`;
+        };
+
+        // --- DISPLAY FUNCTIONS ---
+        const displayTips = (filter = 'all', searchTerm = '') => {
+            tipsContainer.innerHTML = '';
+            topTipsContainer.innerHTML = '';
+            
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+            const filteredTips = tipsData.filter(tip => {
+                const categoryMatch = (filter === 'all' || tip.category === filter);
+                const searchMatch = (
+                    tip.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+                    tip.description.toLowerCase().includes(lowerCaseSearchTerm) ||
+                    (tip.context && tip.context.toLowerCase().includes(lowerCaseSearchTerm))
+                );
+                return categoryMatch && searchMatch;
+            });
+
+            filteredTips.forEach(tip => {
+                const card = document.createElement('div');
+                card.className = 'card p-6 cursor-pointer';
+                card.innerHTML = `
+                    <div class="flex-grow">
+                        <h4 class="text-xl font-bold mb-2 flex items-center">${getIconHtml(tip.category)} ${tip.title}</h4>
+                        <p class="text-gray-400">${tip.description}</p>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4 self-start">${categories[tip.category].name}</p>
+                `;
+                card.addEventListener('click', () => openModal(tip));
+
+                if (tip.topTip && searchTerm === '' && filter === 'all') {
+                    topTipsContainer.appendChild(card);
+                } else {
+                    tipsContainer.appendChild(card);
+                }
+            });
+        };
+
+        const populateCategoryFilters = () => {
+            categoryFilterContainer.innerHTML = '';
+            const allButton = document.createElement('button');
+            allButton.className = 'tip-category-button active';
+            allButton.textContent = 'All';
+            allButton.dataset.category = 'all';
+            categoryFilterContainer.appendChild(allButton);
+
+            for (const key in categories) {
+                const button = document.createElement('button');
+                button.className = 'tip-category-button';
+                button.innerHTML = `<i class="${categories[key].icon} mr-2"></i> ${categories[key].name}`;
+                button.dataset.category = key;
+                categoryFilterContainer.appendChild(button);
+            }
+
+            categoryFilterContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                    const button = e.target.closest('button');
+                    currentCategory = button.dataset.category;
+                    document.querySelectorAll('.tip-category-button').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    displayTips(currentCategory, searchInput.value);
+                }
+            });
+        };
+        
+        // --- MODAL LOGIC ---
+        const openModal = (tip) => {
+            currentTip = tip;
+            mainTipView.style.display = 'block';
+            detailsView.style.display = 'none';
+            
+            modalTitle.textContent = tip.title;
+            modalDescription.textContent = tip.description;
+            modalSource.textContent = `Source: ${tip.source || 'General Knowledge'}`;
+            
+            moreInfoButton.style.display = tip.context ? 'inline-flex' : 'none';
+
+            tipModal.classList.remove('hidden');
+        };
+
+        const showDetailsView = () => {
+            if (!currentTip || !currentTip.context) return;
+
+            mainTipView.style.display = 'none';
+            detailsView.style.display = 'block';
+            detailsView.classList.add('details-view');
+
+            detailsTitle.textContent = currentTip.title;
+            detailsContent.innerHTML = `<p>${currentTip.context}</p>`;
+
+            // Populate related tips
+            detailsRelatedList.innerHTML = '';
+            if (currentTip.related && currentTip.related.length > 0) {
+                document.getElementById('related-tips-container').style.display = 'block';
+                currentTip.related.forEach(relatedTitle => {
+                    const relatedTip = tipsData.find(t => t.title === relatedTitle);
+                    if (relatedTip) {
+                        const tipEl = document.createElement('div');
+                        tipEl.className = 'related-tip-box';
+                        tipEl.innerHTML = `<strong>${relatedTip.title}:</strong> ${relatedTip.description}`;
+                        tipEl.onclick = () => {
+                            // Close current modal and open the new one
+                            tipModal.classList.add('hidden');
+                            setTimeout(() => openModal(relatedTip), 50);
+                        };
+                        detailsRelatedList.appendChild(tipEl);
+                    }
+                });
+            } else {
+                 document.getElementById('related-tips-container').style.display = 'none';
+            }
+
+            // Populate suggested tip
+            const remainingTips = tipsData.filter(t => t.title !== currentTip.title && t.category !== currentTip.category);
+            const suggestedTip = remainingTips[Math.floor(Math.random() * remainingTips.length)];
+            if (suggestedTip) {
+                document.getElementById('suggested-tip-container').style.display = 'block';
+                suggestedTipBoxContent.innerHTML = '';
+                const tipEl = document.createElement('div');
+                tipEl.className = 'suggested-tip-box';
+                tipEl.innerHTML = `<strong>${suggestedTip.title}:</strong> ${suggestedTip.description}`;
+                tipEl.onclick = () => {
+                    tipModal.classList.add('hidden');
+                    setTimeout(() => openModal(suggestedTip), 50);
+                };
+                suggestedTipBoxContent.appendChild(tipEl);
+            } else {
+                document.getElementById('suggested-tip-container').style.display = 'none';
+            }
+        };
+
+        const hideDetailsView = () => {
+            mainTipView.style.display = 'block';
+            detailsView.style.display = 'none';
+            detailsView.classList.remove('details-view');
+        };
+
+        const closeModal = () => {
+            tipModal.classList.add('hidden');
+            hideDetailsView();
+        };
+
+        // --- OTHER MODAL POPULATION ---
+        const populateOp1Licks = () => {
+            op1LicksContent.innerHTML = op1LicksData.map(lick => `
+                <div class="tip-item mb-4">
+                    <h4 class="text-xl font-bold text-white">${lick.title}</h4>
+                    <p class="text-sm text-gray-400 mb-2">Sequencer: ${lick.sequencer}</p>
+                    <p>${lick.description}</p>
+                </div>
+            `).join('');
+        };
+        
+        const populateEffectsList = (searchTerm = '') => {
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+            effectsListContainer.innerHTML = Object.entries(effectsListData)
+                .filter(([name, data]) => name.toLowerCase().includes(lowerCaseSearchTerm) || data.description.toLowerCase().includes(lowerCaseSearchTerm))
+                .map(([name, data]) => `
+                <div class="tip-item mb-4">
+                    <h4 class="text-xl font-bold text-white">${name}</h4>
+                    <p class="text-sm text-gray-400 mb-2">Source: ${data.source}</p>
+                    <p>${data.description}</p>
+                    <p class="mt-2 text-sm"><strong>Parameters:</strong> ${data.params.join(', ')}</p>
+                </div>
+            `).join('');
+        };
+
+        const populateSequencers = () => {
+            sequencersContainer.innerHTML = Object.entries(sequencersData).map(([name, data]) => `
+                <div class="tip-item mb-4">
+                    <h4 class="text-xl font-bold text-white">${name}</h4>
+                    <p class="text-sm text-gray-400 mb-2">Source: ${data.source}</p>
+                    <p>${data.description}</p>
+                </div>
+            `).join('');
+        };
+
+        const populateShortcuts = () => {
+            shortcutsContainer.innerHTML = `
+                <table class="combo-table">
+                    <thead>
+                        <tr>
+                            <th>Key Combination</th>
+                            <th>Action</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${shortcutsData.map(shortcut => `
+                            <tr>
+                                <td><span class="combo-key">${shortcut.combo.replace(/\+/g, '+</span> <span class="combo-key">')}</span></td>
+                                <td>${shortcut.description}</td>
+                                <td>${shortcut.category}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        };
+
+        // --- PDF DOWNLOAD ---
+        const downloadPdf = () => {
+            const doc = new jsPDF();
+            let y = 15;
+            const pageHeight = doc.internal.pageSize.height;
+            const margin = 10;
+
+            doc.setFontSize(18);
+            doc.text("The OP-1 Field Guide: Ultimate Edition", 10, y);
+            y += 10;
+
+            tipsData.forEach(tip => {
+                if (y > pageHeight - 30) {
+                    doc.addPage();
+                    y = 15;
+                }
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                doc.text(`${tip.title} (${categories[tip.category].name})`, 10, y);
+                y += 7;
+                
+                doc.setFontSize(10);
+                doc.setFont(undefined, 'normal');
+                const descLines = doc.splitTextToSize(tip.description, 180);
+                doc.text(descLines, 15, y);
+                y += descLines.length * 5 + 5;
+            });
+
+            doc.save('op1-field-guide.pdf');
+        };
+
+        // --- EVENT LISTENERS ---
+        closeModalButton.addEventListener('click', closeModal);
+        tipModal.addEventListener('click', (e) => {
+            if (e.target === tipModal) closeModal();
+        });
+        moreInfoButton.addEventListener('click', showDetailsView);
+        backToTipButton.addEventListener('click', hideDetailsView);
+
+        copyTipButton.addEventListener('click', () => {
+            if (!currentTip) return;
+            const textToCopy = `${currentTip.title}\n\n${currentTip.description}`;
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                copyTipButton.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => {
+                    copyTipButton.innerHTML = '<i class="fa-solid fa-copy"></i> Copy Tip';
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+            document.body.removeChild(textArea);
+        });
+        
+        const setupModalToggle = (button, modal, closeButton) => {
+            button.addEventListener('click', () => modal.classList.remove('hidden'));
+            closeButton.addEventListener('click', () => modal.classList.add('hidden'));
+            modal.addEventListener('click', (e) => {
+                if(e.target === modal) modal.classList.add('hidden');
+            });
+        };
+
+        setupModalToggle(op1LicksButton, op1LicksModal, closeOp1LicksModalButton);
+        setupModalToggle(effectsListButton, effectsListModal, closeEffectsListModalButton);
+        setupModalToggle(sequencersButton, sequencersModal, closeSequencersModalButton);
+        setupModalToggle(shortcutsButton, shortcutsModal, closeShortcutsModalButton);
+        
+        searchButton.addEventListener('click', () => displayTips(currentCategory, searchInput.value));
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                displayTips(currentCategory, searchInput.value);
+            }
+        });
+        
+        effectsSearchInput.addEventListener('input', () => populateEffectsList(effectsSearchInput.value));
+
+        downloadPdfButton.addEventListener('click', downloadPdf);
+
+        // --- INITIALIZATION ---
+        displayTips();
+        populateCategoryFilters();
+        populateOp1Licks();
+        populateEffectsList();
+        populateSequencers();
+        populateShortcuts();
+    });
+    </script>
+</body>
+</html>
